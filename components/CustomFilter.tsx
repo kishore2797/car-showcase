@@ -4,17 +4,26 @@ import { Fragment, useState } from 'react'
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Listbox, ListboxButton, ListboxOption, ListboxOptions, Transition } from '@headlessui/react';
-import { updateSearchParam } from '@/utils';
 
 interface OptionProps {
   title: string;
   value: string;
 }
 
-const CustomFilter = ({ title, options, setFilter }: { title: string, options: OptionProps[], setFilter: any }) => {
+const CustomFilter = ({ title, options }: { title: string, options: OptionProps[] }) => {
+  const router = useRouter();
 
   const [selected, setSelected] = useState(options[0]);
 
+  const handleuUpdateParams = (e : {title: string, value: string}) => {
+    const searchParams = new URLSearchParams(window.location.search)
+
+    searchParams.set(e.title, e.value.toLowerCase());
+
+    const newPathname = `${window.location.pathname}?${searchParams.toString()}`
+
+    router.push(newPathname);
+  }
 
   return (
     <div className='w-fit'>
@@ -22,7 +31,7 @@ const CustomFilter = ({ title, options, setFilter }: { title: string, options: O
         value={selected}
         onChange={(e) => {
           setSelected(e);
-          setFilter(e.value)
+          handleuUpdateParams(e)
         }}
 
       >

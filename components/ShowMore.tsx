@@ -7,15 +7,17 @@ import { updateSearchParam } from '@/utils';
 
 interface ShowMoreProps {
     pageNumber: number;
-    isNext: boolean;
-    setLimit: any;
+    isNext: boolean
 }
 
-const ShowMore = ({ pageNumber, isNext, setLimit }: ShowMoreProps) => {
+const ShowMore = ({ pageNumber, isNext }: ShowMoreProps) => {
+
+    const router = useRouter();
 
     const handleNavigation = () => {
         const newLimit = (pageNumber + 1) * 10;
-        setLimit(newLimit);
+        const newPathName = updateSearchParam("limit", `${newLimit}`)
+        router.push(newPathName);
     }
 
     return (
